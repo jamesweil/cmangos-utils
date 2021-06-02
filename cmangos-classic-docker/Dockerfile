@@ -3,12 +3,15 @@
 ############################################################
 FROM ubuntu:latest
 
-ENV MYSQL_ROOT_PASSWORD toor
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ=Asia/Shanghai
+
+ENV MYSQL_ROOT_PASSWORD root
 
 RUN apt-get update
 RUN apt-get install -y build-essential gcc g++ automake git-core \
-autoconf make patch libmysql++-dev libtool mysql-client supervisor \
-libssl-dev grep binutils zlibc libc6 libbz2-dev cmake subversion libboost-all-dev curl dnsutils
+autoconf make patch libmysql++-dev libtool mysql-server supervisor \
+libtool libssl-dev grep binutils zlibc libc6 libbz2-dev cmake subversion libboost-all-dev curl dnsutils
 
 # Adding mangos user and group
 RUN groupadd mangos
@@ -28,7 +31,8 @@ RUN mkdir run
 # Compiling
 WORKDIR /home/mangos/build
 
-RUN cmake ../mangos -DCMAKE_INSTALL_PREFIX=\../run -DDEBUG=0
+RUN cmake cmake ../mangos -DCMAKE_INSTALL_PREFIX=\../mangos/run -DBUILD_EXTRACTORS=ON -DPCH=1 -DDEBUG=0 -DBUILD_PLAYERBOT=ON
+
 RUN make -j $(cat /proc/cpuinfo | awk '/^processor/{print $3}' | wc -l)
 RUN make install
 

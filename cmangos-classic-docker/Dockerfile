@@ -39,14 +39,10 @@ RUN make install
 WORKDIR /home/mangos/run
 
 # Adding server data
-#ADD dbc /home/mangos/run/dbc/
-#ADD maps /home/mangos/run/maps/
-#ADD mmaps /home/mangos/run/mmaps/
-#ADD vmaps /home/mangos/run/vmaps/
-RUN mkdir /home/mangos/run/dbc/
-RUN mkdir /home/mangos/run/maps/
-RUN mkdir /home/mangos/run/mmaps/
-RUN mkdir /home/mangos/run/vmaps/
+ADD dbc /home/mangos/run/dbc/
+ADD maps /home/mangos/run/maps/
+ADD mmaps /home/mangos/run/mmaps/
+ADD vmaps /home/mangos/run/vmaps/
 
 # Adding configs and some scripts
 ADD set_realmlist_public.sql /home/mangos/mangos/sql/base/set_realmlist_public.sql
